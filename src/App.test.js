@@ -3,7 +3,7 @@ import React from 'react'
 // import { render, fireEvent, wait } from "@testing-library/react";
 import * as rtl from "@testing-library/react";
 
-import App from "./App";
+import App, { Dropdown } from "./App"
 import fetchShow from './api/fetchShow'
 
 const showData = {
@@ -718,12 +718,18 @@ describe('<App />', () => {
 })
 
 describe('fetchShow', () => {
-  it('Should pass "episodes" into Episodes', () => {
-      const { getByTestId, queryByText, getByDisplayValue } = rtl.render(<App />)
-      expect(queryByText(/select/i)).toBeFalsy()
-      console.log(getByTestId(/episodes/i))
-      rtl.fireEvent.click(getByTestId(/episodes/i))
-      expect(queryByText(/select/i)).toBeTruthy()
+  it('should show a list of episodes when clicked on', () => {
+      const testSeason = 'test Season'
+      rtl.render(<Dropdown>{testSeason}</Dropdown>)
+      expect(rtl.screen.queryByText(testSeason)).toBeNull()
+      rtl.fireEvent.click(rtl.screen.getAllByText(/select/i))
+      expect(rtl.screen.getByText(testSeason)).toBeInTheDocument()
+
+      // const { getByTestId, queryByText } = rtl.render(<App />)
+      // expect(queryByText(/select/i)).toBeFalsy()
+      // console.log(getByTestId(/episodes/i))
+      // rtl.fireEvent.click(getByTestId(/episodes/i))
+      // expect(queryByText(/select/i)).toBeTruthy()
     })
 })
 
